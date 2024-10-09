@@ -466,9 +466,9 @@ End of assembler dump.
    0x0000000000400988 <+36>:	add	x22, x22, #0x58 // after, x/s $x22 = '\020HF', x22是指针
    0x000000000040098c <+40>:	b	0x4009b0 <encrypt_method2+76>    
    0x0000000000400990 <+44>:	ldrb	w1, [x20]      //从+44到+96循环
-   0x0000000000400994 <+48>:	ldr	x0, [x22, #8] // x/s $x0 = qwertyuiopasdfghjklzxcvbnm
+   0x0000000000400994 <+48>:	ldr	x0, [x22, #8] // x/s $x0 = qwertyuiopasdfghjklzxcvbnm，x0是指针，这个值在循环中不变。
    0x0000000000400998 <+52>:	add	x0, x0, x1      //x0 += x1，此处x1 = x20[0]
-   0x000000000040099c <+56>:	ldurb	w0, [x0, #-97]   //w0 = (x0 - #97)[0]
+   0x000000000040099c <+56>:	ldurb	w0, [x0, #-97]   //w0 = ([x22 + #8] + x20[0] - #97)[0]，相当于第+48行的指针右移（x20所指第一个字符与'a'的差值），得到x20的新的第一个字符。
    0x00000000004009a0 <+60>:	strb	w0, [x20] // use char w0 to replace the str encoded by ecryptmethod1 at index 0
    0x00000000004009a4 <+64>:	add	x19, x19, #0x1   //x19 += 1，指针右移一位，直到x19右移到字符串末尾，退出循环。
    0x00000000004009a8 <+68>:	cmp	x19, x21 // x21 is the length of the string
